@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм» [![Build status][travis-image]][travis-url]
 
 * Студент: [Надежда Мухаметова](https://up.htmlacademy.ru/javascript/14/user/156354).
-* Наставник: [Вениамин Тамбурин].
+* Наставник: [Вениамин Тамбурин](https://htmlacademy.ru/profile/id552259).
 
 ---
 
