@@ -148,7 +148,6 @@ for (var i = 0; i < effectsList.length; i++) {
 //   impagePreview.classList = [];
 //   impagePreview.classList.add(baseClassImagePreview);
 //   impagePreview.classList.add('effects__preview--chrome');
-
 // });
 
 // var effectSepia = document.querySelector('#effect-sepia');
@@ -156,7 +155,6 @@ for (var i = 0; i < effectsList.length; i++) {
 //   impagePreview.classList = [];
 //   impagePreview.classList.add(baseClassImagePreview);
 //   impagePreview.classList.add('effects__preview--sepia');
-
 // });
 
 // var effectMarvin = document.querySelector('#effect-marvin');
@@ -164,7 +162,6 @@ for (var i = 0; i < effectsList.length; i++) {
 //   impagePreview.classList = [];
 //   impagePreview.classList.add(baseClassImagePreview);
 //   impagePreview.classList.add('effects__preview--marvin');
-//
 // });
 
 // var effectPhobos = document.querySelector('#effect-phobos');
@@ -172,7 +169,6 @@ for (var i = 0; i < effectsList.length; i++) {
 //   impagePreview.classList = [];
 //   impagePreview.classList.add(baseClassImagePreview);
 //   impagePreview.classList.add('effects__preview--phobos');
-//
 // });
 
 // var effectHeat = document.querySelector('#effect-heat');
