@@ -112,8 +112,10 @@ closeImageForm.addEventListener('click', function () {
 // при нажатии кнопки ESC поле так же закрывается
 document.addEventListener('keydown', function (evt) {
   if (evt.keyCode === ESC_KEYCODE) {
-    uploadImage.classList.add('hidden');
-    uploadFile.value = '';
+    if (evt.target.className !== 'text__hashtags') {
+      uploadImage.classList.add('hidden');
+      uploadFile.value = '';
+    }
   }
 });
 
@@ -136,44 +138,50 @@ for (var i = 0; i < effectsList.length; i++) {
   generateEffects(impagePreview, effectsList[i]);
 }
 
-// var effectNone = document.querySelector('#effect-none');
-// effectNone.addEventListener('click', function() {
-//   impagePreview.classList = [];
-//   impagePreview.classList.add(baseClassImagePreview);
-//   impagePreview.classList.add('effects__preview--none');
-// });
+// валидация хеш-тегов
+var hashtags = document.querySelector('.text__hashtags');
+hashtags.addEventListener('blur', function () {
+  var hashtagValue = hashtags.value;
+  var hashtagsArray = hashtagValue.split(' ');
 
-// var effectChrome = document.querySelector('#effect-chrome');
-// effectChrome.addEventListener('click', function() {
-//   impagePreview.classList = [];
-//   impagePreview.classList.add(baseClassImagePreview);
-//   impagePreview.classList.add('effects__preview--chrome');
-// });
+  validationHashtagsArray(hashtagsArray);
 
-// var effectSepia = document.querySelector('#effect-sepia');
-// effectSepia.addEventListener('click', function() {
-//   impagePreview.classList = [];
-//   impagePreview.classList.add(baseClassImagePreview);
-//   impagePreview.classList.add('effects__preview--sepia');
-// });
+  for (var s = 0; s < hashtagsArray.length; s++) {
+    validationHashtag(hashtagsArray[s]);
+  }
+});
 
-// var effectMarvin = document.querySelector('#effect-marvin');
-// effectMarvin.addEventListener('click', function() {
-//   impagePreview.classList = [];
-//   impagePreview.classList.add(baseClassImagePreview);
-//   impagePreview.classList.add('effects__preview--marvin');
-// });
 
-// var effectPhobos = document.querySelector('#effect-phobos');
-// effectPhobos.addEventListener('click', function() {
-//   impagePreview.classList = [];
-//   impagePreview.classList.add(baseClassImagePreview);
-//   impagePreview.classList.add('effects__preview--phobos');
-// });
+var validationHashtag = function (hashtagElement) {
+  if (!hashtagElement.startsWith('#')) {
+    hashtags.setCustomValidity('Сообщение должно начинаться со знака #');
+  } else {
+    hashtags.setCustomValidity('');
+  }
 
-// var effectHeat = document.querySelector('#effect-heat');
-// effectHeat.addEventListener('click', function() {
-//   impagePreview.classList = [];
-//   impagePreview.classList.add(baseClassImagePreview);
-//   impagePreview.classList.add('effects__preview--heat');
-// });
+  if (hashtagElement.length < 2 && hashtagElement.length < 21) {
+    hashtags.setCustomValidity('Сообщение должно содержать больше одного и меньше 20 букв');
+  } else {
+    hashtags.setCustomValidity('');
+  }
+};
+
+var validationHashtagsArray = function (array) {
+  if (array.length > 6) {
+    hashtags.setCustomValidity('Сообщение не может содержать больше 5 записей');
+  }
+  var element = '';
+  var sameArray = [];
+  for (var l = 0; l < array.length; l++) {
+    sameArray[l] = array[l].toLowerCase();
+  }
+  while (sameArray.length) {
+    element = sameArray.shift();
+    if (sameArray.includes(element) === true) {
+      hashtags.setCustomValidity('Все заметки должны быть разными');
+      break;
+    } else {
+      hashtags.setCustomValidity('');
+    }
+  }
+};
