@@ -112,7 +112,7 @@ closeImageForm.addEventListener('click', function () {
 // при нажатии кнопки ESC поле так же закрывается
 document.addEventListener('keydown', function (evt) {
   if (evt.keyCode === ESC_KEYCODE) {
-    if (evt.target.className !== 'text__hashtags') {
+    if (evt.target.className !== 'text__hashtags' || evt.target.className !== 'text__description') {
       uploadImage.classList.add('hidden');
       uploadFile.value = '';
     }
@@ -185,3 +185,43 @@ var validationHashtagsArray = function (array) {
     }
   }
 };
+
+// реализация прибавления и уменьшения масштаба
+var maxValueResizeImg = 100;
+var minValueResizeImg = 25;
+var stepValueResizeImg = 25;
+var imgUploadElement = document.querySelector('.img-upload__overlay');
+var plusScale = imgUploadElement.querySelector('.resize__control--plus');
+var minusScale = imgUploadElement.querySelector('.resize__control--minus');
+var valueScale = imgUploadElement.querySelector('.resize__control--value');
+var scaleValueNumber = parseInt(valueScale.value, 10);
+
+function changesScaleStyle() {
+  var styleScaleValue = scaleValueNumber / 100;
+  impagePreview.style.transform = 'scale' + '(' + tyleScaleValue + ')';
+};
+
+var onPlusClickHandler = function () {
+  if (scaleValueNumber < maxValueResizeImg) {
+      if (scaleValueNumber === maxValueResizeImg) {
+        plusScale.setAttribute('disabled', true);
+      }
+      scaleValueNumber += stepValueResizeImg;
+      valueScale.value = scaleValueNumber + '%';
+      changesScaleStyle();
+      minusScale.disabled = false;
+    }
+};
+
+var onMinusClickHandler = function () {
+  if (scaleValueNumber < minValueResizeImg) {
+      if (scaleValueNumber === minValueResizeImg) {
+        minusScale.setAttribute('disabled', true);
+      }
+      scaleValueNumber -= stepValueResizeImg;
+      valueScale.value = scaleValueNumber + '%';
+      changesScaleStyle();
+      plusScale.disabled = false;
+    }
+};
+
