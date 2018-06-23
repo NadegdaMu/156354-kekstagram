@@ -186,7 +186,7 @@ var validationHashtagsArray = function (array) {
   }
 };
 
-// реализация прибавления и уменьшения масштаба
+// реализация прибавления и уменьшения масштаба фотографии
 var maxValueResizeImg = 100;
 var minValueResizeImg = 25;
 var stepValueResizeImg = 25;
@@ -198,30 +198,32 @@ var scaleValueNumber = parseInt(valueScale.value, 10);
 
 function changesScaleStyle() {
   var styleScaleValue = scaleValueNumber / 100;
-  impagePreview.style.transform = 'scale' + '(' + tyleScaleValue + ')';
-};
+  impagePreview.style.transform = 'scale' + '(' + styleScaleValue + ')';
+}
 
 var onPlusClickHandler = function () {
   if (scaleValueNumber < maxValueResizeImg) {
-      if (scaleValueNumber === maxValueResizeImg) {
-        plusScale.setAttribute('disabled', true);
-      }
-      scaleValueNumber += stepValueResizeImg;
-      valueScale.value = scaleValueNumber + '%';
-      changesScaleStyle();
-      minusScale.disabled = false;
+    if (scaleValueNumber === maxValueResizeImg) {
+      plusScale.setAttribute('disabled', true);
     }
+    scaleValueNumber += stepValueResizeImg;
+    valueScale.value = scaleValueNumber + '%';
+    changesScaleStyle();
+    minusScale.disabled = false;
+  }
 };
 
 var onMinusClickHandler = function () {
   if (scaleValueNumber < minValueResizeImg) {
-      if (scaleValueNumber === minValueResizeImg) {
-        minusScale.setAttribute('disabled', true);
-      }
-      scaleValueNumber -= stepValueResizeImg;
-      valueScale.value = scaleValueNumber + '%';
-      changesScaleStyle();
-      plusScale.disabled = false;
+    if (scaleValueNumber === minValueResizeImg) {
+      minusScale.setAttribute('disabled', true);
     }
+    scaleValueNumber -= stepValueResizeImg;
+    valueScale.value = scaleValueNumber + '%';
+    changesScaleStyle();
+    plusScale.disabled = false;
+  }
 };
 
+plusScale.addEventListener('click', onPlusClickHandler);
+minusScale.addEventListener('click', onMinusClickHandler);
