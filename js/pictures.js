@@ -112,68 +112,235 @@ closeImageForm.addEventListener('click', function () {
 // при нажатии кнопки ESC поле так же закрывается
 document.addEventListener('keydown', function (evt) {
   if (evt.keyCode === ESC_KEYCODE) {
-    uploadImage.classList.add('hidden');
-    uploadFile.value = '';
+    if (evt.target.className !== 'text__hashtags' || evt.target.className !== 'text__description') {
+      uploadImage.classList.add('hidden');
+      uploadFile.value = '';
+    }
   }
 });
 
 // при выборе эффекта к основной фотографии применяется класс соответствующего эффекта
-var impagePreview = document.querySelector('.img-upload__preview');
-var baseClassImagePreview = impagePreview.classList.item(0);
+var imagePreview = document.querySelector('.img-upload__preview');
+var baseClassImagePreview = imagePreview.classList.item(0);
 
-var generateEffects = function (element, effectname) {
+var generateEffects = function (element, effectname, defaultfilter) {
   var effect = document.querySelector('#effect-' + effectname);
   effect.addEventListener('click', function () {
-    element.classList = [];
-    element.classList.add(baseClassImagePreview);
-    element.classList.add('effects__preview--' + effectname);
+    if (effect === 'none') {
+      element.classList = [];
+      element.style.filter = '';
+      element.classList.add(baseClassImagePreview);
+      element.classList.add('effects__preview--' + effectname);
+      document.querySelector('.scale__line').classList.add('visually-hidden');
+    } else {
+      element.classList = [];
+      element.style.filter = '';
+      element.classList.add(baseClassImagePreview);
+      element.classList.add('effects__preview--' + effectname);
+      sliderElement.style.left = '100%';
+      sliderLevel.style.width = '100%';
+      element.style.filter = defaultfilter;
+    }
   });
+  return true;
 };
 
 var effectsList = ['none', 'chrome', 'sepia', 'marvin', 'phobos', 'heat'];
+var effectsDefStyle = ['', 'grayscale(1)', 'sepia(1)', 'invert(100)', 'blur(3)', 'brightness(3)'];
 
 for (var i = 0; i < effectsList.length; i++) {
-  generateEffects(impagePreview, effectsList[i]);
+  generateEffects(imagePreview, effectsList[i], effectsDefStyle[i]);
 }
 
-// var effectNone = document.querySelector('#effect-none');
-// effectNone.addEventListener('click', function() {
-//   impagePreview.classList = [];
-//   impagePreview.classList.add(baseClassImagePreview);
-//   impagePreview.classList.add('effects__preview--none');
-// });
+// валидация хеш-тегов
+var hashtags = document.querySelector('.text__hashtags');
 
-// var effectChrome = document.querySelector('#effect-chrome');
-// effectChrome.addEventListener('click', function() {
-//   impagePreview.classList = [];
-//   impagePreview.classList.add(baseClassImagePreview);
-//   impagePreview.classList.add('effects__preview--chrome');
-// });
+var validationHashtag = function (hashtagElement) {
 
-// var effectSepia = document.querySelector('#effect-sepia');
-// effectSepia.addEventListener('click', function() {
-//   impagePreview.classList = [];
-//   impagePreview.classList.add(baseClassImagePreview);
-//   impagePreview.classList.add('effects__preview--sepia');
-// });
+  if (!hashtagElement.startsWith('#')) {
+    hashtags.setCustomValidity('Сообщение должно начинаться со знака #');
+    return false;
+  } else if (hashtagElement.lastIndexOf('#') !== 0) {
+    hashtags.setCustomValidity('нет пробела');
+    return false;
+  } else {
+    hashtags.setCustomValidity('');
+  }
 
-// var effectMarvin = document.querySelector('#effect-marvin');
-// effectMarvin.addEventListener('click', function() {
-//   impagePreview.classList = [];
-//   impagePreview.classList.add(baseClassImagePreview);
-//   impagePreview.classList.add('effects__preview--marvin');
-// });
+  if (hashtagElement.length < 2 || hashtagElement.length > 21) {
+    hashtags.setCustomValidity('Сообщение должно содержать больше одного и меньше 20 букв');
+    return false;
+  } else {
+    hashtags.setCustomValidity('');
+    return true;
+  }
+};
 
-// var effectPhobos = document.querySelector('#effect-phobos');
-// effectPhobos.addEventListener('click', function() {
-//   impagePreview.classList = [];
-//   impagePreview.classList.add(baseClassImagePreview);
-//   impagePreview.classList.add('effects__preview--phobos');
-// });
+var validationHashtagsArray = function (array) {
+  if (array.length > 5) {
+    hashtags.setCustomValidity('Сообщение не может содержать больше 5 записей');
+    return false;
+  } else {
+    hashtags.setCustomValidity('');
+  }
 
-// var effectHeat = document.querySelector('#effect-heat');
-// effectHeat.addEventListener('click', function() {
-//   impagePreview.classList = [];
-//   impagePreview.classList.add(baseClassImagePreview);
-//   impagePreview.classList.add('effects__preview--heat');
-// });
+  var element = '';
+  var sameArray = [];
+  var test = false;
+  for (var l = 0; l < array.length; l++) {
+    sameArray[l] = array[l].toLowerCase();
+  }
+  while (sameArray.length) {
+    element = sameArray.shift();
+    if (sameArray.includes(element) === true) {
+      hashtags.setCustomValidity('Все заметки должны быть разными');
+      test = false;
+      break;
+    } else {
+      test = true;
+      hashtags.setCustomValidity('');
+    }
+  }
+  return test;
+};
+
+
+// валидация формы
+var form = document.querySelector('.img-upload__form');
+
+hashtags.addEventListener('input', function () {
+  var hashtagstring = hashtags.value;
+  var hashtagsArray = hashtagstring.split(' ');
+  if (validationHashtagsArray(hashtagsArray)) {
+    for (var s = 0; s < hashtagsArray.length; s++) {
+      validationHashtag(hashtagsArray[s]);
+    }
+  }
+});
+
+
+form.addEventListener('submit', function (e) {
+  if (!form.checkValidity()) {
+    e.preventDefault();
+    return false;
+  }
+
+  return true;
+});
+
+
+// реализация прибавления и уменьшения масштаба фотографии
+var maxValueResizeImg = 100;
+var minValueResizeImg = 25;
+var stepValueResizeImg = 25;
+var imgUploadElement = document.querySelector('.img-upload__overlay');
+var plusScale = imgUploadElement.querySelector('.resize__control--plus');
+var minusScale = imgUploadElement.querySelector('.resize__control--minus');
+var valueScale = imgUploadElement.querySelector('.resize__control--value');
+var scaleValueNumber = parseInt(valueScale.value, 10);
+
+function changesScaleStyle() {
+  var styleScaleValue = scaleValueNumber / 100;
+  imagePreview.style.transform = 'scale' + '(' + styleScaleValue + ')';
+}
+
+var onPlusClickHandler = function () {
+  if (scaleValueNumber < maxValueResizeImg) {
+    if (scaleValueNumber === maxValueResizeImg) {
+      plusScale.setAttribute('disabled', true);
+    }
+    scaleValueNumber += stepValueResizeImg;
+    valueScale.value = scaleValueNumber + '%';
+    changesScaleStyle();
+  }
+};
+
+var onMinusClickHandler = function () {
+  if (scaleValueNumber > minValueResizeImg) {
+    if (scaleValueNumber === minValueResizeImg) {
+      minusScale.setAttribute('disabled', true);
+    }
+    scaleValueNumber -= stepValueResizeImg;
+    valueScale.value = scaleValueNumber + '%';
+    changesScaleStyle();
+  }
+};
+
+plusScale.addEventListener('click', onPlusClickHandler);
+minusScale.addEventListener('click', onMinusClickHandler);
+
+// функция интенсивности эффекта
+var step = null;
+var effectMethodsList =
+{
+  'effects__preview--chrome': 1,
+  'effects__preview--sepia': 1,
+  'effects__preview--marvin': 100,
+  'effects__preview--phobos': 3,
+  'effects__preview--heat': 3
+};
+
+var generatesDepthEffect = function (sliderLevel) {
+  for (var key in effectMethodsList) {
+    if (key === imagePreview.classList[1]) {
+      applyingMethodsEffect(key, sliderLevel);
+      step = effectMethodsList[key] * sliderLevel;
+      break;
+    }
+  }
+};
+
+// функция генерирующая глубину эффекта
+var applyingMethodsEffect = function (filterName) {
+
+  if (filterName === ('effects__preview--chrome')) {
+    imagePreview.style.filter = 'grayscale(' + step + ')';
+  } else if (filterName === ('effects__preview--sepia')) {
+    imagePreview.style.filter = 'sepia(' + step + ')';
+  } else if (filterName === ('effects__preview--marvin')) {
+    imagePreview.style.filter = 'invert(' + step + '%)';
+  } else if (filterName === ('effects__preview--phobos')) {
+    imagePreview.style.filter = 'blur(' + step + 'px)';
+  } else if (filterName === ('effects__preview--heat')) {
+    imagePreview.style.filter = 'brightness(' + step + ')';
+  }
+};
+
+
+// реализация ползунка эффектов
+var sliderElement = document.querySelector('.scale__pin');
+var sliderLine = document.querySelector('.scale__line');
+var sliderLevel = document.querySelector('.scale__level');
+var sliderValue = document.querySelector('.scale__value');
+
+sliderLine.addEventListener('mousedown', startSlide, false);
+sliderLine.addEventListener('mouseup', stopSlide, false);
+
+function startSlide(event) {
+  var setPerc = ((((event.clientX - 400) / sliderLine.offsetWidth)));
+  sliderLine.addEventListener('mousemove', moveSlide, false);
+  sliderElement.style.left = (setPerc * 100) + '%';
+  sliderLevel.style.width = (setPerc * 100) + '%';
+  sliderValue.value = parseInt(setPerc * 100, 10);
+  generatesDepthEffect(setPerc);
+}
+
+function moveSlide(event) {
+  var setPerc = ((((event.clientX - 400) / sliderLine.offsetWidth)));
+  if (setPerc > 1 || setPerc < 0) {
+    stopSlide(event);
+  }
+  sliderElement.style.left = (setPerc * 100) + '%';
+  sliderLevel.style.width = (setPerc * 100) + '%';
+  sliderValue.value = parseInt(setPerc * 100, 10);
+  generatesDepthEffect(setPerc);
+}
+
+function stopSlide(event) {
+  var setPerc = ((((event.clientX - 400) / sliderLine.offsetWidth)));
+  sliderLine.removeEventListener('mousemove', moveSlide, false);
+  sliderElement.style.left = (setPerc * 100) + '%';
+  sliderLevel.style.width = (setPerc * 100) + '%';
+  sliderValue.value = parseInt(setPerc * 100, 10);
+  generatesDepthEffect(setPerc);
+}
