@@ -308,6 +308,7 @@ var applyingMethodsEffect = function (filterName) {
 
 
 // реализация ползунка эффектов
+var startSlideX = 400;
 var sliderElement = document.querySelector('.scale__pin');
 var sliderLine = document.querySelector('.scale__line');
 var sliderLevel = document.querySelector('.scale__level');
@@ -317,7 +318,7 @@ sliderLine.addEventListener('mousedown', startSlide, false);
 sliderLine.addEventListener('mouseup', stopSlide, false);
 
 function startSlide(event) {
-  var setPerc = ((((event.clientX - 400) / sliderLine.offsetWidth)));
+  var setPerc = ((((event.clientX - startSlideX) / sliderLine.offsetWidth)));
   sliderLine.addEventListener('mousemove', moveSlide, false);
   sliderElement.style.left = (setPerc * 100) + '%';
   sliderLevel.style.width = (setPerc * 100) + '%';
@@ -326,7 +327,7 @@ function startSlide(event) {
 }
 
 function moveSlide(event) {
-  var setPerc = ((((event.clientX - 400) / sliderLine.offsetWidth)));
+  var setPerc = ((((event.clientX - startSlideX) / sliderLine.offsetWidth)));
   if (setPerc > 1 || setPerc < 0) {
     stopSlide(event);
   }
@@ -337,7 +338,7 @@ function moveSlide(event) {
 }
 
 function stopSlide(event) {
-  var setPerc = ((((event.clientX - 400) / sliderLine.offsetWidth)));
+  var setPerc = ((((event.clientX - startSlideX) / sliderLine.offsetWidth)));
   sliderLine.removeEventListener('mousemove', moveSlide, false);
   sliderElement.style.left = (setPerc * 100) + '%';
   sliderLevel.style.width = (setPerc * 100) + '%';
