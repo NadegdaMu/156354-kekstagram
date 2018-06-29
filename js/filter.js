@@ -1,8 +1,14 @@
 'use strict';
 (function () {
   // при выборе эффекта к основной фотографии применяется класс соответствующего эффекта
-  window.imagePreview = document.querySelector('.img-upload__preview');
-  var baseClassImagePreview = window.imagePreview.classList.item(0);
+  var imagePreview = document.querySelector('.img-upload__preview');
+  var baseClassImagePreview = imagePreview.classList.item(0);
+  var slider = document.querySelector('.scale');
+  var sliderLine = slider.querySelector('.scale__line');
+  var sliderPin = slider.querySelector('.scale__pin');
+  var sliderLevel = slider.querySelector('.scale__level');
+  var sliderValue = document.querySelector('.scale__value');
+  var MIN_LEVEL_SLIDER = 0;
 
   var generateEffects = function (element, effectname, defaultfilter) {
     var effect = document.querySelector('#effect-' + effectname);
@@ -12,13 +18,13 @@
         element.style.filter = '';
         element.classList.add(baseClassImagePreview);
         element.classList.add('effects__preview--' + effectname);
-        document.querySelector('.scale__line').classList.add('visually-hidden');
+        document.querySelector('.img-upload__scale').classList.add('visually-hidden');
       } else {
         element.classList = [];
         element.style.filter = '';
         element.classList.add(baseClassImagePreview);
         element.classList.add('effects__preview--' + effectname);
-        sliderElement.style.left = '100%';
+        sliderPin.style.left = '100%';
         sliderLevel.style.width = '100%';
         element.style.filter = defaultfilter;
       }
@@ -30,7 +36,7 @@
   var effectsDefStyle = ['', 'grayscale(1)', 'sepia(1)', 'invert(100)', 'blur(3)', 'brightness(3)'];
 
   for (var i = 0; i < effectsList.length; i++) {
-    generateEffects(window.imagePreview, effectsList[i], effectsDefStyle[i]);
+    generateEffects(imagePreview, effectsList[i], effectsDefStyle[i]);
   }
 
   // функция интенсивности эффекта
@@ -44,11 +50,11 @@
     'effects__preview--heat': 3
   };
 
-  var generatesDepthEffect = function (sliderLevel) {
+  var generatesDepthEffect = function (sliderLevelEffect) {
     for (var key in effectMethodsList) {
-      if (key === window.imagePreview.classList[1]) {
-        applyingMethodsEffect(key, sliderLevel);
-        step = effectMethodsList[key] * sliderLevel;
+      if (key === imagePreview.classList[1]) {
+        applyingMethodsEffect(key, sliderLevelEffect);
+        step = effectMethodsList[key] * sliderLevelEffect;
         break;
       }
     }
@@ -58,55 +64,57 @@
   var applyingMethodsEffect = function (filterName) {
 
     if (filterName === ('effects__preview--chrome')) {
-      window.imagePreview.style.filter = 'grayscale(' + step + ')';
+      imagePreview.style.filter = 'grayscale(' + step + ')';
     } else if (filterName === ('effects__preview--sepia')) {
-      window.imagePreview.style.filter = 'sepia(' + step + ')';
+      imagePreview.style.filter = 'sepia(' + step + ')';
     } else if (filterName === ('effects__preview--marvin')) {
-      window.imagePreview.style.filter = 'invert(' + step + '%)';
+      imagePreview.style.filter = 'invert(' + step + '%)';
     } else if (filterName === ('effects__preview--phobos')) {
-      window.imagePreview.style.filter = 'blur(' + step + 'px)';
+      imagePreview.style.filter = 'blur(' + step + 'px)';
     } else if (filterName === ('effects__preview--heat')) {
-      window.imagePreview.style.filter = 'brightness(' + step + ')';
+      imagePreview.style.filter = 'brightness(' + step + ')';
     }
   };
 
+  // Получение координат для перемещения пина
+  var movePin = function (evt) {
+    var sliderLineCoords = sliderLine.getBoundingClientRect();
+    var sliderLineLeft = sliderLineCoords.left;
+    var sliderLineWidth = sliderLineCoords.width;
+    var startCoords = evt.clientX;
+    var sliderPinCoordX = startCoords - sliderLineLeft;
+    var pinProportionValue = sliderPinCoordX / sliderLineWidth;
 
-  // реализация ползунка эффектов
-  var startSlideX = 400;
-  var sliderElement = document.querySelector('.scale__pin');
-  var sliderLine = document.querySelector('.scale__line');
-  var sliderLevel = document.querySelector('.scale__level');
-  var sliderValue = document.querySelector('.scale__value');
-
-  sliderLine.addEventListener('mousedown', startSlide, false);
-  sliderLine.addEventListener('mouseup', stopSlide, false);
-
-  function startSlide(event) {
-    var setPerc = ((((event.clientX - startSlideX) / sliderLine.offsetWidth)));
-    sliderLine.addEventListener('mousemove', moveSlide, false);
-    sliderElement.style.left = (setPerc * 100) + '%';
-    sliderLevel.style.width = (setPerc * 100) + '%';
-    sliderValue.value = parseInt(setPerc * 100, 10);
-    generatesDepthEffect(setPerc);
-  }
-
-  function moveSlide(event) {
-    var setPerc = ((((event.clientX - startSlideX) / sliderLine.offsetWidth)));
-    if (setPerc > 1 || setPerc < 0) {
-      stopSlide(event);
+    if (sliderPinCoordX < MIN_LEVEL_SLIDER) {
+      sliderPinCoordX = MIN_LEVEL_SLIDER;
+    } else if (sliderPinCoordX > sliderLineWidth) {
+      sliderPinCoordX = sliderLineWidth;
     }
-    sliderElement.style.left = (setPerc * 100) + '%';
-    sliderLevel.style.width = (setPerc * 100) + '%';
-    sliderValue.value = parseInt(setPerc * 100, 10);
-    generatesDepthEffect(setPerc);
-  }
 
-  function stopSlide(event) {
-    var setPerc = ((((event.clientX - startSlideX) / sliderLine.offsetWidth)));
-    sliderLine.removeEventListener('mousemove', moveSlide, false);
-    sliderElement.style.left = (setPerc * 100) + '%';
-    sliderLevel.style.width = (setPerc * 100) + '%';
-    sliderValue.value = parseInt(setPerc * 100, 10);
-    generatesDepthEffect(setPerc);
-  }
+    sliderPin.style.left = sliderPinCoordX + 'px';
+    sliderLevel.style.width = sliderPin.style.left;
+    sliderValue.value = parseInt(pinProportionValue * 100, 10);
+    generatesDepthEffect(pinProportionValue);
+  };
+
+  /* События, при которых происходит перемещение */
+  var onMouseDown = function () {
+    var onMouseMove = function (moveEvt) {
+      moveEvt.preventDefault();
+      movePin(moveEvt);
+    };
+
+    var onMouseUp = function (upEvt) {
+      upEvt.preventDefault();
+      movePin(upEvt);
+
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    };
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+  };
+
+  slider.addEventListener('mousedown', onMouseDown);
 })();
