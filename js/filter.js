@@ -2,7 +2,7 @@
 (function () {
   // при выборе эффекта к основной фотографии применяется класс соответствующего эффекта
   var imagePreview = document.querySelector('.img-upload__preview');
-  var baseClassImagePreview = imagePreview.classList.item(0);
+  var baseClassImagePreview = imagePreview.classList.item('.img-upload__preview');
   var slider = document.querySelector('.scale');
   var sliderLine = slider.querySelector('.scale__line');
   var sliderPin = slider.querySelector('.scale__pin');
@@ -13,17 +13,13 @@
   var generateEffects = function (element, effectname, defaultfilter) {
     var effect = document.querySelector('#effect-' + effectname);
     effect.addEventListener('click', function () {
+      element.classList = [];
+      element.style.filter = '';
+      element.classList.add(baseClassImagePreview);
+      element.classList.add('effects__preview--' + effectname);
       if (effect === 'none') {
-        element.classList = [];
-        element.style.filter = '';
-        element.classList.add(baseClassImagePreview);
-        element.classList.add('effects__preview--' + effectname);
         document.querySelector('.img-upload__scale').classList.add('visually-hidden');
       } else {
-        element.classList = [];
-        element.style.filter = '';
-        element.classList.add(baseClassImagePreview);
-        element.classList.add('effects__preview--' + effectname);
         sliderPin.style.left = '100%';
         sliderLevel.style.width = '100%';
         element.style.filter = defaultfilter;
@@ -41,8 +37,7 @@
 
   // функция интенсивности эффекта
   var step = null;
-  var effectMethodsList =
-  {
+  var effectMethodsList = {
     'effects__preview--chrome': 1,
     'effects__preview--sepia': 1,
     'effects__preview--marvin': 100,
@@ -105,7 +100,6 @@
     };
 
     var onMouseUp = function (upEvt) {
-      upEvt.preventDefault();
       movePin(upEvt);
 
       document.removeEventListener('mousemove', onMouseMove);
