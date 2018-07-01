@@ -1,6 +1,7 @@
 'use strict';
-window.utils = (function () {
-  return {
+(function () {
+
+  window.utils = {
     // функция возвращающая случайный елемент массива
     getRandomItem: function (array) {
       var randomIndex = array[Math.floor(Math.random() * (array.length))];

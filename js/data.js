@@ -1,5 +1,5 @@
 'use strict';
-window.photo = (function () {
+(function () {
 
   var comments = [
     'Всё отлично!',
@@ -18,7 +18,7 @@ window.photo = (function () {
     'Цените каждое мгновенье. Цените тех, кто рядом с вами и отгоняйте все сомненья. Не обижайте всех словами......',
     'Вот это тачка!'
   ];
-  return {
+  window.photo = {
   // функция, генерирующая userPhotos - массив фотографий пользователей
     generateUserPhotos: function () {
       var userPhotos = [];
