@@ -67,11 +67,13 @@
   });
 
 
-  form.addEventListener('submit', function (e) {
+  form.addEventListener('submit', function (evt) {
     if (!form.checkValidity()) {
-      e.preventDefault();
+      evt.preventDefault();
       return false;
     }
+     window.backend.saveData(new FormData(from), onLoad, onError);
+     evt.preventDefault();
     return true;
   });
 })();
