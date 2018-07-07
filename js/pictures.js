@@ -2,8 +2,7 @@
 (function () {
   var sameUserPhotoElement = document.querySelector('.pictures');
   var sameUserPhotoTemplate = document.querySelector('#picture').content.querySelector('.picture__link');
-  // вызов заполнения массива объектов данных для фотографий
-  var photos = window.photo.generateUserPhotos();
+
   // функция отрисовывающая фотографии
   var renderUserPhotos = function (photo) {
     var userPhotoElement = sameUserPhotoTemplate.cloneNode(true);
@@ -12,15 +11,27 @@
     userPhotoElement.querySelector('.picture__stat--comments').textContent = photo.comments;
     return userPhotoElement;
   };
-  var fragment = document.createDocumentFragment();
-  photos.forEach(function (element) {
-    fragment.appendChild(renderUserPhotos(element)); // вызов отрисовки фотографий
-  });
-  sameUserPhotoElement.appendChild(fragment);
+  var successHandler = function (data) {
+    var fragment = document.createDocumentFragment();
+    photos.forEach(function (element) {
+      fragment.appendChild(renderUserPhotos(element)); // вызов отрисовки фотографий
+    })
+    sameUserPhotoElement.appendChild(fragment);
+  };
 
-  var bigPicture = document.querySelector('.big-picture');
+  var errorHandler = function (errorMessage) {
+    var node = document.createElement('div');
+    node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
+    node.style.position = 'absolute';
+    node.style.left = 0;
+    node.style.right = 0;
+    node.style.fontSize = '30px';
+    node.textContent = errorMessage;
+    document.body.insertAdjacentElement('afterbegin', node);
+  };
 
   // заполнение данными большой фотографии данными
+  var bigPicture = document.querySelector('.big-picture');
   bigPicture.querySelector('.big-picture__img').src = photos[0].url;
   bigPicture.querySelector('.likes-count').textContent = photos[0].likes;
   bigPicture.querySelector('.comments-count').textContent = photos[0].comments;
@@ -42,4 +53,6 @@
   bigPicture.querySelector('.social__caption').textContent = photos[0].description;
   document.querySelector('.social__comment-count').classList.add('visually-hidden');
   document.querySelector('.social__loadmore').classList.add('visually-hidden');
+
+  window.load(successHandler, errorHandler);
 })();
