@@ -2,6 +2,7 @@
 (function () {
   var sameUserPhotoElement = document.querySelector('.pictures');
   var sameUserPhotoTemplate = document.querySelector('#picture').content.querySelector('.picture__link');
+  var bigPicture = document.querySelector('.big-picture');
 
   // функция отрисовывающая фотографии
   var renderUserPhotos = function (photo) {
@@ -13,15 +14,21 @@
   };
   var successHandler = function (data) {
     var fragment = document.createDocumentFragment();
-    photos.forEach(function (element) {
+    var firstBigPicture = data.shift();
+    data.forEach(function (element) {
       fragment.appendChild(renderUserPhotos(element)); // вызов отрисовки фотографий
     })
     sameUserPhotoElement.appendChild(fragment);
+    bigPicture.querySelector('.big-picture__img').src = firstBigPicture.url;
+    bigPicture.querySelector('.likes-count').textContent = firstBigPicture.likes;
+    bigPicture.querySelector('.comments-count').textContent = firstBigPicture.comments;
+    bigPicture.querySelector('.social__caption').textContent = firstBigPicture.description;
+
   };
 
   var errorHandler = function (errorMessage) {
     var node = document.createElement('div');
-    node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
+    node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: #6cdc09;';
     node.style.position = 'absolute';
     node.style.left = 0;
     node.style.right = 0;
@@ -31,10 +38,7 @@
   };
 
   // заполнение данными большой фотографии данными
-  var bigPicture = document.querySelector('.big-picture');
-  bigPicture.querySelector('.big-picture__img').src = photos[0].url;
-  bigPicture.querySelector('.likes-count').textContent = photos[0].likes;
-  bigPicture.querySelector('.comments-count').textContent = photos[0].comments;
+
 
   var listComments = document.querySelector('.social__comments');
   var comment = document.createDocumentFragment();
@@ -50,9 +54,9 @@
   comment.appendChild(newElement);
   listComments.appendChild(comment);
 
-  bigPicture.querySelector('.social__caption').textContent = photos[0].description;
+
   document.querySelector('.social__comment-count').classList.add('visually-hidden');
   document.querySelector('.social__loadmore').classList.add('visually-hidden');
 
-  window.load(successHandler, errorHandler);
+  window.backend.loadData(successHandler, errorHandler);
 })();

@@ -21,7 +21,7 @@
       onError('Превышено время запроса в ' + xhr.timeout + 'мс');
     });
 
-    xhr.timeout = 7000;
+    xhr.timeout = 30000;
     return xhr;
   };
 

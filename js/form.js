@@ -66,14 +66,33 @@
     }
   });
 
+  var onLoad = function(e) {
+    var node = document.createElement('div');
+    node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: #6cdc09;';
+    node.style.position = 'absolute';
+    node.style.left = 0;
+    node.style.right = 0;
+    node.style.fontSize = '30px';
+    node.textContent = 'Данные успешно отправлены';
+    document.body.insertAdjacentElement('afterbegin', node);
+    document.querySelector('.img-upload__form').reset();
+  };
+
+  var onError = function (e) {
+    var error = window.utils.cloneTemplate('.img-upload__message--error');
+    var errorLinks = error.querySelector('.error__links');
+    document.body.appendChild(error);
+    error.querySelector('.error__text').textContent = message;
+    error.style.zIndex = '2';
+    error.classList.remove('hidden');
+    };
 
   form.addEventListener('submit', function (evt) {
-    if (!form.checkValidity()) {
-      evt.preventDefault();
-      return false;
+    evt.preventDefault();
+    if (form.checkValidity()) {
+      window.backend.uploadData(new FormData(form), onLoad, onError);
     }
-     window.backend.saveData(new FormData(from), onLoad, onError);
-     evt.preventDefault();
-    return true;
+
+    return false;
   });
 })();
