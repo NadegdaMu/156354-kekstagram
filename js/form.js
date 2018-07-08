@@ -76,11 +76,13 @@
   var onError = function (e) {
     var error = window.utils.cloneTemplate('.img-upload__message--error');
     var errorLinks = error.querySelector('.error__links');
+
     document.body.appendChild(error);
     error.querySelector('.error__text').textContent = message;
     error.style.zIndex = '2';
     error.classList.remove('hidden');
-    };
+    errorLinks.addEventListener('click', onErrorLinksClick);
+  };
 
   form.addEventListener('submit', function (evt) {
     evt.preventDefault();

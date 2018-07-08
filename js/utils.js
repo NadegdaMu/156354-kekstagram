@@ -1,7 +1,10 @@
 'use strict';
 (function () {
 
+  var template = document.querySelector('#picture');
+
   window.utils = {
+
     // функция возвращающая случайный елемент массива
     getRandomItem: function (array) {
       var randomIndex = array[Math.floor(Math.random() * (array.length))];
@@ -11,6 +14,10 @@
     // функция генерирующая целое число в диапазоне, включая минимальное и максимальное.
     getRandomInRange: function (min, max) {
       return Math.floor(Math.random() * (max - min + 1)) + min;
+    },
+
+    cloneTemplate: function (className) {
+      return template.content.querySelector(className).cloneNode(true);
     },
 
     generateMessage: function () {
