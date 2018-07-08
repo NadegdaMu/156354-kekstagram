@@ -68,11 +68,11 @@
 
   var onLoad = function(e) {
     var node = document.createElement('div');
-    node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: #6cdc09;';
+    node.style = 'z-index: 100; width: 600px; margin-top: 300px; margin-left: 335px; text-align: center; background-color: #dcd009;';
     node.style.position = 'absolute';
-    node.style.left = 0;
-    node.style.right = 0;
-    node.style.fontSize = '30px';
+    node.style.left = 400;
+    node.style.top = 400;
+    node.style.fontSize = '26px';
     node.textContent = 'Данные успешно отправлены';
     document.body.insertAdjacentElement('afterbegin', node);
     document.querySelector('.img-upload__form').reset();
