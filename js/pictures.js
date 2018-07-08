@@ -28,7 +28,7 @@
 
   var errorHandler = function (errorMessage) {
     var node = document.createElement('div');
-    node.style = 'z-index: 100; width: 600px; margin-top: 300px; margin-left: 335px; text-align: center; background-color: #6cdc09;';
+    node.style = 'z-index: 100; width: 600px; height: 50px; padding-top: 15px; margin-top: 300px; margin-left: 335px; text-align: center; background-color: #6cdc09;';
     node.style.position = 'absolute';
     node.style.fontSize = '30px';
     node.textContent = errorMessage;

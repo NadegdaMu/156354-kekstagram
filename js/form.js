@@ -67,15 +67,10 @@
   });
 
   var onLoad = function(e) {
-    var node = document.createElement('div');
-    node.style = 'z-index: 100; width: 600px; margin-top: 300px; margin-left: 335px; text-align: center; background-color: #dcd009;';
-    node.style.position = 'absolute';
-    node.style.left = 400;
-    node.style.top = 400;
-    node.style.fontSize = '26px';
-    node.textContent = 'Данные успешно отправлены';
-    document.body.insertAdjacentElement('afterbegin', node);
+    //setTimeout(window.utils.generateMessage(), 4);
+    window.utils.generateMessage();
     document.querySelector('.img-upload__form').reset();
+    //setTimeout(document.querySelector('.modal__message').classList.add('hidden'), 10000);
   };
 
   var onError = function (e) {
