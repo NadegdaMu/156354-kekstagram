@@ -66,22 +66,19 @@
     }
   });
 
-  var onLoad = function(e) {
-    //setTimeout(window.utils.generateMessage(), 4);
+  var onLoad = function () {
+    // setTimeout(window.utils.generateMessage(), 4);
     window.utils.generateMessage();
     document.querySelector('.img-upload__form').reset();
-    //setTimeout(document.querySelector('.modal__message').classList.add('hidden'), 10000);
+    // setTimeout(document.querySelector('.modal__message').classList.add('hidden'), 10000);
   };
 
-  var onError = function (e) {
+  var onError = function (message) {
     var error = window.utils.cloneTemplate('.img-upload__message--error');
-    var errorLinks = error.querySelector('.error__links');
-
     document.body.appendChild(error);
     error.querySelector('.error__text').textContent = message;
     error.style.zIndex = '2';
     error.classList.remove('hidden');
-    errorLinks.addEventListener('click', onErrorLinksClick);
   };
 
   form.addEventListener('submit', function (evt) {

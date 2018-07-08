@@ -17,7 +17,7 @@
     var firstBigPicture = data.shift();
     data.forEach(function (element) {
       fragment.appendChild(renderUserPhotos(element)); // вызов отрисовки фотографий
-    })
+    });
     sameUserPhotoElement.appendChild(fragment);
     bigPicture.querySelector('.big-picture__img').src = firstBigPicture.url;
     bigPicture.querySelector('.likes-count').textContent = firstBigPicture.likes;
