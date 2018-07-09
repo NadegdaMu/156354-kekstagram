@@ -68,7 +68,14 @@
   });
 
   var onLoad = function () {
+    // document.querySelector('.img-upload__form').reset();
+    // imageUpload.classList.add('hidden');
+    setTimeout(window.utils.generateMessage, 100);
     document.querySelector('.img-upload__form').reset();
+
+    setTimeout(function () {
+      document.querySelector('.modal__message').classList.add('hidden');
+    }, 1000);
     imageUpload.classList.add('hidden');
   };
 
