@@ -2,6 +2,7 @@
 (function () {
   // валидация хеш-тегов
   var hashtags = document.querySelector('.text__hashtags');
+  var imageUpload = document.querySelector('.img-upload__overlay');
 
   var validationHashtag = function (hashtagElement) {
 
@@ -67,10 +68,8 @@
   });
 
   var onLoad = function () {
-    // setTimeout(window.utils.generateMessage(), 4);
-    window.utils.generateMessage();
     document.querySelector('.img-upload__form').reset();
-    // setTimeout(document.querySelector('.modal__message').classList.add('hidden'), 10000);
+    imageUpload.classList.add('hidden');
   };
 
   var onError = function (message) {
