@@ -29,11 +29,6 @@
       node.style.fontSize = '26px';
       node.textContent = 'Данные успешно отправлены';
       document.body.insertAdjacentElement('afterbegin', node);
-    },
-
-    removeMessage: function () {
-      var elem = document.querySelector('.modal__message');
-      elem.parentNode.removeChild(elem);
     }
   };
 })();

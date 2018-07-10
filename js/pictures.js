@@ -6,12 +6,31 @@
 
   // функция отрисовывающая фотографии
   var renderUserPhotos = function (photo) {
+    var showBigPicture = function () {
+      bigPicture.querySelector('.big-picture__title').classList.remove('visually-hidden');
+      bigPicture.querySelector('.big-picture__img img').src = photo.url;
+      bigPicture.querySelector('.likes-count').textContent = photo.likes;
+      bigPicture.querySelector('.comments-count').textContent = photo.comments;
+      bigPicture.querySelector('.social__caption').textContent = photo.description;
+      document.body.classList.add('modal-open');
+      bigPicture.classList.remove('hidden');
+    };
+
+    var closeBigPicture = document.querySelector('#picture-cancel');
+    closeBigPicture.addEventListener('click', function () {
+      bigPicture.classList.add('hidden');
+      document.body.classList.remove('modal-open');
+      bigPicture.querySelector('.big-picture__title').classList.add('visually-hidden');
+    });
+
     var userPhotoElement = sameUserPhotoTemplate.cloneNode(true);
     userPhotoElement.querySelector('.picture__img').src = photo.url;
     userPhotoElement.querySelector('.picture__stat--likes').textContent = photo.likes;
     userPhotoElement.querySelector('.picture__stat--comments').textContent = photo.comments;
+    userPhotoElement.addEventListener('click', showBigPicture);
     return userPhotoElement;
   };
+
   var successHandler = function (data) {
     var fragment = document.createDocumentFragment();
     var firstBigPicture = data.shift();
@@ -35,7 +54,7 @@
     document.body.insertAdjacentElement('afterbegin', node);
   };
 
-  // заполнение данными большой фотографии данными
+  // заполнение данными большой фотографии
 
 
   var listComments = document.querySelector('.social__comments');
