@@ -81,7 +81,7 @@
     var error = window.utils.cloneTemplate('.img-upload__message--error');
     document.body.appendChild(error);
     error.querySelector('.error__text').textContent = message;
-    error.style.zIndex = '2';
+
     error.classList.remove('hidden');
   };
 
