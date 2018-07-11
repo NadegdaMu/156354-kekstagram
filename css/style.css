@@ -75,6 +75,23 @@ main {
   overflow: hidden;
 }
 
+.modal__message,
+.error__message {
+  position: fixed;
+  z-index: 100;
+  width: 600px;
+  height: 50px;
+  padding-top: 15px;
+  margin-top: 300px;
+  margin-left: 335px;
+  text-align: center;
+  font-size: 26px;
+  background-color: #dcd009;
+}
+
+.img-upload__message--error {
+  z-index: 50;
+}
 
 /* Кнопка закрытия */
 
