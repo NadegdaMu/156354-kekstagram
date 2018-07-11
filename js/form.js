@@ -2,6 +2,7 @@
 (function () {
   // валидация хеш-тегов
   var hashtags = document.querySelector('.text__hashtags');
+  var imageUpload = document.querySelector('.img-upload__overlay');
 
   var validationHashtag = function (hashtagElement) {
 
@@ -66,12 +67,30 @@
     }
   });
 
+  var onLoad = function () {
+    window.utils.generateMessage();
+    document.querySelector('.img-upload__form').reset();
 
-  form.addEventListener('submit', function (e) {
-    if (!form.checkValidity()) {
-      e.preventDefault();
-      return false;
+    setTimeout(function () {
+      document.querySelector('.modal__message').classList.add('hidden');
+    }, 1000);
+    imageUpload.classList.add('hidden');
+  };
+
+  var onError = function (message) {
+    var error = window.utils.cloneTemplate('.img-upload__message--error');
+    document.body.appendChild(error);
+    error.querySelector('.error__text').textContent = message;
+
+    error.classList.remove('hidden');
+  };
+
+  form.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+    if (form.checkValidity()) {
+      window.backend.uploadData(new FormData(form), onLoad, onError);
     }
-    return true;
+
+    return false;
   });
 })();
