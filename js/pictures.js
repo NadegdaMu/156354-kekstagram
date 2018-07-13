@@ -97,7 +97,7 @@
     var fragment = document.createDocumentFragment();
     serverdata.forEach(function (element) {
       fragment.appendChild(renderUserPhotos(element)); // вызов отрисовки фотографий
-       window.data.photosArray.push(renderUserPhotos(element));
+       window.photo.photosArray.push(renderUserPhotos(element));
     });
     sameUserPhotoElement.appendChild(fragment);
   };

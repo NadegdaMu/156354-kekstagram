@@ -32,7 +32,7 @@
   // Популярные — фотографии в изначальном порядке.
   var popularClickHandler = window.debounce(function () {
 
-    var popular = window.data.photosArray;
+    var popular = window.photo.photosArray;
     reRenderPicture(popular);
   });
 
@@ -41,10 +41,10 @@
 
     var news = [];
 
-    var newsItems = window.utils.getRandomInRange(10, 0, window.data.photosArray.length - 1);
+    var newsItems = window.utils.getRandomInRange(10, 0, window.photo.photosArray.length - 1);
 
     for (var i = 0; i < newsItems.length; i++) {
-      news.push(window.data.photosArray[newsItems[i]]);
+      news.push(window.photo.photosArray[newsItems[i]]);
     }
 
     reRenderPicture(news);
@@ -53,7 +53,7 @@
   // Обсуждаемые — фотографии, отсортированные в порядке убывания количества комментариев.
   var discussedClickHandler = window.debounce(function () {
 
-    var discussions = window.data.photosArray.slice().sort(function (less, more) {
+    var discussions = window.photo.photosArray.slice().sort(function (less, more) {
       return more.comments.length - less.comments.length;
     });
 
