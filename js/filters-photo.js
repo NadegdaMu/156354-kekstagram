@@ -25,7 +25,9 @@
     pictureBlock.appendChild(pictureTitle);
     pictureBlock.appendChild(imgUpload);
 
-    window.pictures(renderUserPhotos);
+    for (var i = 0; i < reRenderArray.length; i++) {
+      pictureBlock.appendChild(window.renderUserPhotos(reRenderArray[i]));
+    }
     setButtonStyle();
   };
 
@@ -33,31 +35,32 @@
   var popularClickHandler = window.debounce(function () {
 
     var popular = window.photo.photosArray;
-    reRenderPicture(popular);
+    reRenderUserPhotos(popular);
   });
 
   // Новые — 10 случайных, не повторяющихся фотографий.
   var newClickHandler = window.debounce(function () {
-
     var news = [];
-
-    var newsItems = window.utils.getRandomInRange(10, 0, window.photo.photosArray.length - 1);
-
-    for (var i = 0; i < newsItems.length; i++) {
-      news.push(window.photo.photosArray[newsItems[i]]);
+    var indexes = [];
+    while (indexes.length < 10) {
+      var randIndex = window.utils.getRandomInRange(0, window.photo.photosArray.length - 1);
+      if (!indexes.includes(randIndex)) {
+        indexes.push(randIndex);
+      }
     }
-
-    reRenderPicture(news);
+    indexes.forEach(function (item) {
+      news.push(window.photo.photosArray[item]);
+    });
+    reRenderUserPhotos(news);
   });
 
   // Обсуждаемые — фотографии, отсортированные в порядке убывания количества комментариев.
   var discussedClickHandler = window.debounce(function () {
-
-    var discussions = window.photo.photosArray.slice().sort(function (less, more) {
-      return more.comments.length - less.comments.length;
+    var discussions = window.photo.photosArray.slice().sort(function (left, right) {
+      return right.comments.length - left.comments.length;
     });
 
-    reRenderPicture(discussions);
+    reRenderUserPhotos(discussions);
   });
 
   buttonPopular.addEventListener('click', popularClickHandler);

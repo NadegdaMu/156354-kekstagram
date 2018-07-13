@@ -6,7 +6,7 @@
 
 
   // функция отрисовывающая фотографии
-  var renderUserPhotos = function (photo) {
+  window.renderUserPhotos = function (photo) {
     var startShowCommentsFrom = 0;
     var showMore = function () {
       startShowCommentsFrom = startShowCommentsFrom + 5;
@@ -95,11 +95,13 @@
 
   var successHandler = function (serverdata) {
     var fragment = document.createDocumentFragment();
+    window.photo.photosArray = serverdata.slice();
     serverdata.forEach(function (element) {
-      fragment.appendChild(renderUserPhotos(element)); // вызов отрисовки фотографий
-       window.photo.photosArray.push(renderUserPhotos(element));
+      fragment.appendChild(window.renderUserPhotos(element)); // вызов отрисовки фотографий
     });
     sameUserPhotoElement.appendChild(fragment);
+    document.querySelector('.img-filters').classList.remove('img-filters--inactive');
+    document.querySelector('.img-filters__title').classList.remove('visually-hidden');
   };
 
   var errorHandler = function (errorMessage) {
