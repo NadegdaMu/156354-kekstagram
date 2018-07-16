@@ -11,12 +11,12 @@
   var filterButtons = document.querySelectorAll('.img-filters__button');
 
   // стили для кнопок
-  var setButtonStyle = function () {
+  var setButtonStyle = function (evt) {
     for (var i = 0; i < filterButtons.length; i++) {
       filterButtons[i].classList.remove('img-filters__button--active');
     }
 
-    document.activeElement.classList.add('img-filters__button--active');
+    evt.target.classList.add('img-filters__button--active');
   };
 
   // перерисовка блока с фотографиями
