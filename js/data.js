@@ -2,6 +2,8 @@
 (function () {
 
   window.photo = {
+    photosArray: [],
+
     description: [
       'Тестим новую камеру!',
       'Затусили с друзьями на море',

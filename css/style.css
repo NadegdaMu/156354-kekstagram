@@ -167,13 +167,17 @@ main {
   opacity: 0;
 }
 
+.img-filters__title {
+  margin-right: 20px;
+}
+
 .img-filters__button {
   padding: 5px 15px;
 
   font-family: "Open Sans", "Arial", sans-serif;
   font-weight: 700;
   font-size: 18px;
-  line-height: auto;
+  line-height: 45px;
   text-transform: uppercase;
 
   cursor: pointer;
