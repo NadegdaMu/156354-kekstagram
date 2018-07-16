@@ -28,38 +28,31 @@
     for (var i = 0; i < reRenderArray.length; i++) {
       pictureBlock.appendChild(window.renderUserPhotos(reRenderArray[i]));
     }
-    setButtonStyle();
+
   };
 
   // Популярные — фотографии в изначальном порядке.
-  var popularClickHandler = window.debounce(function () {
+  var popularClickHandler = window.debounce(function (evt) {
 
     var popular = window.photo.photosArray;
+    setButtonStyle(evt);
     reRenderUserPhotos(popular);
   });
 
   // Новые — 10 случайных, не повторяющихся фотографий.
-  var newClickHandler = window.debounce(function () {
-    var news = [];
-    var indexes = [];
-    while (indexes.length < 10) {
-      var randIndex = window.utils.getRandomInRange(0, window.photo.photosArray.length - 1);
-      if (!indexes.includes(randIndex)) {
-        indexes.push(randIndex);
-      }
-    }
-    indexes.forEach(function (item) {
-      news.push(window.photo.photosArray[item]);
-    });
+  var newClickHandler = window.debounce(function (evt) {
+
+    var news = window.photo.photosArray.slice().sort(window.utils.shuffle).slice(0, 10);
+    setButtonStyle(evt);
     reRenderUserPhotos(news);
   });
 
   // Обсуждаемые — фотографии, отсортированные в порядке убывания количества комментариев.
-  var discussedClickHandler = window.debounce(function () {
+  var discussedClickHandler = window.debounce(function (evt) {
     var discussions = window.photo.photosArray.slice().sort(function (left, right) {
       return right.comments.length - left.comments.length;
     });
-
+    setButtonStyle(evt);
     reRenderUserPhotos(discussions);
   });
 

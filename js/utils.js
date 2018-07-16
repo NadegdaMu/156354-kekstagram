@@ -26,6 +26,13 @@
       node.classList.add('modal__message');
       node.textContent = 'Данные успешно отправлены';
       document.body.insertAdjacentElement('afterbegin', node);
+    },
+
+    shuffle: function (a, b) {
+      a = Math.random();
+      b = 0.5;
+      return a - b;
     }
+
   };
 })();
