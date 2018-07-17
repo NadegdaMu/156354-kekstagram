@@ -28,10 +28,8 @@
       document.body.insertAdjacentElement('afterbegin', node);
     },
 
-    shuffle: function (a, b) {
-      a = Math.random();
-      b = 0.5;
-      return a - b;
+    shuffle: function () {
+      return Math.random() - 0.5;
     }
 
   };
