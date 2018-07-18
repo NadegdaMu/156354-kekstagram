@@ -28,27 +28,26 @@
     for (var i = 0; i < reRenderArray.length; i++) {
       pictureBlock.appendChild(window.renderUserPhotos(reRenderArray[i]));
     }
-
   };
 
   // Популярные — фотографии в изначальном порядке.
-  var popularClickHandler = window.debounce(function (evt) {
+  var popularClickHandler = window.utils.debounce(function (evt) {
 
     var popular = window.photo.photosArray;
     setButtonStyle(evt);
     reRenderUserPhotos(popular);
   });
 
-  // Новые — 10 случайных, не повторяющихся фотографий.
-  var newClickHandler = window.debounce(function (evt) {
+  // новые — 10 случайных, не повторяющихся фотографий.
+  var newClickHandler = window.utils.debounce(function (evt) {
 
     var news = window.photo.photosArray.slice().sort(window.utils.shuffle).slice(0, 10);
     setButtonStyle(evt);
     reRenderUserPhotos(news);
   });
 
-  // Обсуждаемые — фотографии, отсортированные в порядке убывания количества комментариев.
-  var discussedClickHandler = window.debounce(function (evt) {
+  // обсуждаемые — фотографии, отсортированные в порядке убывания количества комментариев.
+  var discussedClickHandler = window.utils.debounce(function (evt) {
     var discussions = window.photo.photosArray.slice().sort(function (left, right) {
       return right.comments.length - left.comments.length;
     });

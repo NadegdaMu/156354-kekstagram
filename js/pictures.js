@@ -4,7 +4,6 @@
   var sameUserPhotoTemplate = document.querySelector('#picture').content.querySelector('.picture__link');
   var bigPicture = document.querySelector('.big-picture');
 
-
   // функция отрисовывающая фотографии
   window.renderUserPhotos = function (photo) {
     var startShowCommentsFrom = 0;
@@ -112,8 +111,6 @@
   };
 
   // заполнение данными большой фотографии
-
-
   var listComments = document.querySelector('.social__comments');
   var comment = document.createDocumentFragment();
   var newElement = document.createElement('li');
@@ -127,7 +124,6 @@
   newElement.insertAdjacentText = ('beforeend', 'текст комментария');
   comment.appendChild(newElement);
   listComments.appendChild(comment);
-
 
   document.querySelector('.social__comment-count').classList.add('visually-hidden');
   document.querySelector('.social__loadmore').classList.add('visually-hidden');
