@@ -6,7 +6,7 @@
 
   window.utils = {
 
-    // функция возвращающая случайный елемент массива
+    // функция возвращающая случайный элемент массива
     getRandomItem: function (array) {
       return array[Math.floor(Math.random() * (array.length))];
     },
@@ -32,17 +32,17 @@
     },
 
     debounce: function (fun) {
-    var lastTimeout = null;
+      var lastTimeout = null;
 
-    return function () {
-      var args = arguments;
-      if (lastTimeout) {
-        window.clearTimeout(lastTimeout);
-      }
-      lastTimeout = window.setTimeout(function () {
-        fun.apply(null, args);
-      }, DEBOUNCE_INTERVAL);
-    };
-  }
-
+      return function () {
+        var args = arguments;
+        if (lastTimeout) {
+          window.clearTimeout(lastTimeout);
+        }
+        lastTimeout = window.setTimeout(function () {
+          fun.apply(null, args);
+        }, DEBOUNCE_INTERVAL);
+      };
+    }
+  };
 })();

@@ -1,5 +1,6 @@
 'use strict';
 (function () {
+
   // валидация хеш-тегов
   var hashtags = document.querySelector('.text__hashtags');
   var imageUpload = document.querySelector('.img-upload__overlay');
@@ -25,6 +26,7 @@
     }
   };
 
+  // валидация массивов хеш-тегов
   var validationHashtagsArray = function (array) {
     if (array.length > 5) {
       hashtags.setCustomValidity('Сообщение не может содержать больше 5 записей');
@@ -52,7 +54,6 @@
     }
     return test;
   };
-
 
   // валидация формы
   var form = document.querySelector('.img-upload__form');
@@ -85,8 +86,8 @@
     error.classList.remove('hidden');
   };
 
-  form.addEventListener('submit', function (evt) {
-    evt.preventDefault();
+  form.addEventListener('submit', function (event) {
+    event.preventDefault();
     if (form.checkValidity()) {
       window.backend.uploadData(new FormData(form), onLoad, onError);
     }

@@ -1,5 +1,6 @@
 'use strict';
 (function () {
+
   // при выборе эффекта к основной фотографии применяется класс соответствующего эффекта
   var imagePreview = document.querySelector('.img-upload__preview');
   var baseClassImagePreview = imagePreview.classList.item('.img-upload__preview');
@@ -71,12 +72,12 @@
     }
   };
 
-  // Получение координат для перемещения пина
-  var movePin = function (evt) {
+  // получение координат для перемещения пина
+  var movePin = function (event) {
     var sliderLineCoords = sliderLine.getBoundingClientRect();
     var sliderLineLeft = sliderLineCoords.left;
     var sliderLineWidth = sliderLineCoords.width;
-    var startCoords = evt.clientX;
+    var startCoords = event.clientX;
     var sliderPinCoordX = startCoords - sliderLineLeft;
     var pinProportionValue = sliderPinCoordX / sliderLineWidth;
 
@@ -92,15 +93,15 @@
     generatesDepthEffect(pinProportionValue);
   };
 
-  /* События, при которых происходит перемещение */
+  // события, при которых происходит перемещение
   var onMouseDown = function () {
-    var onMouseMove = function (moveEvt) {
-      moveEvt.preventDefault();
-      movePin(moveEvt);
+    var onMouseMove = function (event) {
+      event.preventDefault();
+      movePin(event);
     };
 
-    var onMouseUp = function (upEvt) {
-      movePin(upEvt);
+    var onMouseUp = function (event) {
+      movePin(event);
 
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);

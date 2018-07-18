@@ -7,7 +7,7 @@
   // функция отрисовывающая фотографии
   window.renderUserPhotos = function (photo) {
     var startShowCommentsFrom = 0;
-    var showMore = function () {
+    var showMoreComments = function () {
       startShowCommentsFrom = startShowCommentsFrom + 5;
       showComments(startShowCommentsFrom);
     };
@@ -58,7 +58,7 @@
         document.querySelector('.social__comments').innerHTML = '';
         showComments(startShowCommentsFrom);
       }
-      bigPicture.querySelector('.social__loadmore').addEventListener('click', showMore);
+      bigPicture.querySelector('.social__loadmore').addEventListener('click', showMoreComments);
       bigPicture.querySelector('.social__picture').src = 'img/avatar-' + window.utils.getRandomInRange(1, 5) + '.svg';
       bigPicture.querySelector('.social__caption').innerHTML = window.utils.getRandomItem(window.photo.description);
       document.body.classList.add('modal-open');
@@ -72,14 +72,14 @@
       bigPicture.querySelector('.social__comment-count').classList.add('visually-hidden');
       bigPicture.querySelector('.social__loadmore').classList.add('visually-hidden');
       startShowCommentsFrom = 0;
-      bigPicture.querySelector('.social__loadmore').removeEventListener('click', showMore);
+      bigPicture.querySelector('.social__loadmore').removeEventListener('click', showMoreComments);
     };
 
     var closeBigPicture = document.querySelector('#picture-cancel');
 
     closeBigPicture.addEventListener('click', resetToDefault);
-    document.addEventListener('keydown', function (evt) {
-      if (evt.keyCode === 27) {
+    document.addEventListener('keydown', function (event) {
+      if (event.keyCode === 27) {
         resetToDefault();
       }
     });
@@ -92,10 +92,10 @@
     return userPhotoElement;
   };
 
-  var successHandler = function (serverdata) {
+  var successHandler = function (serverData) {
     var fragment = document.createDocumentFragment();
-    window.photo.photosArray = serverdata.slice();
-    serverdata.forEach(function (element) {
+    window.photo.photosArray = serverData.slice();
+    serverData.forEach(function (element) {
       fragment.appendChild(window.renderUserPhotos(element)); // вызов отрисовки фотографий
     });
     sameUserPhotoElement.appendChild(fragment);
