@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+
   var pictureBlock = document.querySelector('.pictures');
   var pictureTitle = document.querySelector('.pictures__title');
   var imgUpload = document.querySelector('.img-upload');
@@ -11,12 +12,12 @@
   var filterButtons = document.querySelectorAll('.img-filters__button');
 
   // стили для кнопок
-  var setButtonStyle = function (evt) {
+  var setButtonStyle = function (event) {
     for (var i = 0; i < filterButtons.length; i++) {
       filterButtons[i].classList.remove('img-filters__button--active');
     }
 
-    evt.target.classList.add('img-filters__button--active');
+    event.target.classList.add('img-filters__button--active');
   };
 
   // перерисовка блока с фотографиями
@@ -28,31 +29,30 @@
     for (var i = 0; i < reRenderArray.length; i++) {
       pictureBlock.appendChild(window.renderUserPhotos(reRenderArray[i]));
     }
-
   };
 
-  // Популярные — фотографии в изначальном порядке.
-  var popularClickHandler = window.debounce(function (evt) {
+  // популярные — фотографии в изначальном порядке.
+  var popularClickHandler = window.utils.debounce(function (event) {
 
     var popular = window.photo.photosArray;
-    setButtonStyle(evt);
+    setButtonStyle(event);
     reRenderUserPhotos(popular);
   });
 
-  // Новые — 10 случайных, не повторяющихся фотографий.
-  var newClickHandler = window.debounce(function (evt) {
+  // новые — 10 случайных, не повторяющихся фотографий.
+  var newClickHandler = window.utils.debounce(function (event) {
 
     var news = window.photo.photosArray.slice().sort(window.utils.shuffle).slice(0, 10);
-    setButtonStyle(evt);
+    setButtonStyle(event);
     reRenderUserPhotos(news);
   });
 
-  // Обсуждаемые — фотографии, отсортированные в порядке убывания количества комментариев.
-  var discussedClickHandler = window.debounce(function (evt) {
+  // обсуждаемые — фотографии, отсортированные в порядке убывания количества комментариев.
+  var discussedClickHandler = window.utils.debounce(function (event) {
     var discussions = window.photo.photosArray.slice().sort(function (left, right) {
       return right.comments.length - left.comments.length;
     });
-    setButtonStyle(evt);
+    setButtonStyle(event);
     reRenderUserPhotos(discussions);
   });
 

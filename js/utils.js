@@ -2,14 +2,13 @@
 (function () {
 
   var template = document.querySelector('#picture');
-
+  var DEBOUNCE_INTERVAL = 500;
 
   window.utils = {
 
-    // функция возвращающая случайный елемент массива
+    // функция возвращающая случайный элемент массива
     getRandomItem: function (array) {
-      var randomIndex = array[Math.floor(Math.random() * (array.length))];
-      return randomIndex;
+      return array[Math.floor(Math.random() * (array.length))];
     },
 
     // функция генерирующая целое число в диапазоне, включая минимальное и максимальное.
@@ -30,7 +29,20 @@
 
     shuffle: function () {
       return Math.random() - 0.5;
-    }
+    },
 
+    debounce: function (fun) {
+      var lastTimeout = null;
+
+      return function () {
+        var args = arguments;
+        if (lastTimeout) {
+          window.clearTimeout(lastTimeout);
+        }
+        lastTimeout = window.setTimeout(function () {
+          fun.apply(null, args);
+        }, DEBOUNCE_INTERVAL);
+      };
+    }
   };
 })();
