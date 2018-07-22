@@ -20,10 +20,11 @@
     if (hashtagElement.length < 2 || hashtagElement.length > 21) {
       hashtags.setCustomValidity('Сообщение должно содержать больше одного и меньше 20 букв');
       return false;
-    } else {
-      hashtags.setCustomValidity('');
-      return true;
     }
+
+    hashtags.setCustomValidity('');
+    return true;
+
   };
 
   // валидация массивов хеш-тегов
@@ -31,9 +32,9 @@
     if (array.length > 5) {
       hashtags.setCustomValidity('Сообщение не может содержать больше 5 записей');
       return false;
-    } else {
-      hashtags.setCustomValidity('');
     }
+
+    hashtags.setCustomValidity('');
 
     var element = '';
     var sameArray = [];
@@ -81,7 +82,7 @@
   var onError = function (message) {
     var error = window.utils.cloneTemplate('.img-upload__message--error');
     document.body.appendChild(error);
-    error.querySelector('.error__text').textContent = message;
+    error.querySelector('.error__link').textContent = message;
 
     error.classList.remove('hidden');
   };

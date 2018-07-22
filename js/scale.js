@@ -12,10 +12,10 @@
   var valueScaleElement = imgUploadElement.querySelector('.resize__control--value');
   var scaleValueNumber = parseInt(valueScaleElement.value, 10);
 
-  function changesScaleStyle() {
+  var changesScaleStyle = function () {
     var styleScaleValue = scaleValueNumber / 100;
     imagePreview.style.transform = 'scale' + '(' + styleScaleValue + ')';
-  }
+  };
 
   var onPlusClickHandler = function () {
     if (scaleValueNumber < RESIZE_MAX) {
