@@ -24,7 +24,6 @@
 
     hashtags.setCustomValidity('');
     return true;
-
   };
 
   // валидация массивов хеш-тегов
@@ -90,7 +89,6 @@
     if (form.checkValidity()) {
       window.backend.uploadData(new FormData(form), onLoad, onError);
     }
-
     return false;
   });
 })();
