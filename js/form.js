@@ -44,14 +44,13 @@
     }
     while (sameArray.length) {
       element = sameArray.shift();
-      if (sameArray.includes(element) === true) {
+      if (sameArray.includes(element)) {
         hashtags.setCustomValidity('Все заметки должны быть разными');
         test = false;
         break;
-      } else {
-        test = true;
-        hashtags.setCustomValidity('');
       }
+      test = true;
+      hashtags.setCustomValidity('');
     }
     return test;
   };
