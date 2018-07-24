@@ -39,9 +39,11 @@
     var element = '';
     var sameArray = [];
     var test = false;
-    for (var l = 0; l < array.length; l++) {
-      sameArray[l] = array[l].toLowerCase();
-    }
+
+    array.forEach(function (item) {
+      sameArray.push(item.toLowerCase());
+    });
+
     while (sameArray.length) {
       element = sameArray.shift();
       if (sameArray.includes(element)) {

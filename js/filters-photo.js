@@ -13,10 +13,9 @@
 
   // стили для кнопок
   var setButtonStyle = function (event) {
-    for (var i = 0; i < filterButtons.length; i++) {
-      filterButtons[i].classList.remove('img-filters__button--active');
-    }
-
+    filterButtons.forEach(function (item) {
+      item.classList.remove('img-filters__button--active');
+    });
     event.target.classList.add('img-filters__button--active');
   };
 
@@ -26,9 +25,10 @@
     pictureBlock.appendChild(pictureTitle);
     pictureBlock.appendChild(imgUpload);
 
-    for (var i = 0; i < reRenderArray.length; i++) {
-      pictureBlock.appendChild(window.renderUserPhotos(reRenderArray[i]));
-    }
+    reRenderArray.forEach(function (item) {
+      pictureBlock.appendChild(window.renderUserPhotos(item));
+
+    });
   };
 
   // популярные — фотографии в изначальном порядке.
