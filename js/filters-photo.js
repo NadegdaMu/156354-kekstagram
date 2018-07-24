@@ -5,7 +5,6 @@
   var pictureBlock = document.querySelector('.pictures');
   var pictureTitle = document.querySelector('.pictures__title');
   var imgUpload = document.querySelector('.img-upload');
-
   var buttonPopular = document.querySelector('#filter-popular');
   var buttonNew = document.querySelector('#filter-new');
   var buttonDiscussed = document.querySelector('#filter-discussed');
@@ -24,7 +23,6 @@
     pictureBlock.innerHTML = '';
     pictureBlock.appendChild(pictureTitle);
     pictureBlock.appendChild(imgUpload);
-
     reRenderArray.forEach(function (item) {
       pictureBlock.appendChild(window.renderUserPhotos(item));
 
@@ -33,7 +31,6 @@
 
   // популярные — фотографии в изначальном порядке.
   var popularClickHandler = window.utils.debounce(function (event) {
-
     var popular = window.photo.photosArray;
     setButtonStyle(event);
     reRenderUserPhotos(popular);
@@ -41,7 +38,6 @@
 
   // новые — 10 случайных, не повторяющихся фотографий.
   var newClickHandler = window.utils.debounce(function (event) {
-
     var news = window.photo.photosArray.slice().sort(window.utils.shuffle).slice(0, 10);
     setButtonStyle(event);
     reRenderUserPhotos(news);

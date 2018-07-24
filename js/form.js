@@ -37,13 +37,10 @@
     hashtags.setCustomValidity('');
 
     var element = '';
-    var sameArray = [];
     var test = false;
-
-    array.forEach(function (item) {
-      sameArray.push(item.toLowerCase());
+    var sameArray = array.map(function (item) {
+      return item.toLowerCase();
     });
-
     while (sameArray.length) {
       element = sameArray.shift();
       if (sameArray.includes(element)) {
